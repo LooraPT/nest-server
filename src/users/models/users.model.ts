@@ -1,7 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { BelongsToMany, Column, DataType, Model, Table } from 'sequelize-typescript';
+import { BelongsToMany, Column, DataType, HasOne, Model, Table } from 'sequelize-typescript';
 import { Role } from 'src/roles/models/roles.model';
 import { UserRoles } from 'src/roles/models/user-roles.model';
+import { Token } from 'src/token/models/token.model';
 
 interface UserCreationsAttrs {
     email: string;
@@ -11,7 +12,7 @@ interface UserCreationsAttrs {
 @Table({ tableName: 'users' })
 export class User extends Model<User, UserCreationsAttrs> {
     @ApiProperty({ example: '1', description: 'id user' })
-    @Column({ type: DataType.INTEGER, unique: true, allowNull: false, primaryKey: true, autoIncrement: true })
+    @Column({ type: DataType.INTEGER, unique: true, primaryKey: true, autoIncrement: true })
     id: number;
 
     @ApiProperty({ example: 'user@gmail.com', description: 'user email' })
@@ -24,4 +25,7 @@ export class User extends Model<User, UserCreationsAttrs> {
 
     @BelongsToMany(() => Role, () => UserRoles)
     roles: Role[]
+
+    @HasOne(() => Token)
+    refreshToken: Token;
 }
