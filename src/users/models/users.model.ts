@@ -1,7 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { BelongsToMany, Column, DataType, HasOne, Model, Table } from 'sequelize-typescript';
+import { BelongsToMany, Column, DataType, HasMany, HasOne, Model, Table } from 'sequelize-typescript';
+import { Order } from 'src/order/models/order.model';
+import { Profile } from 'src/profile/models/profile.model';
 import { Role } from 'src/roles/models/roles.model';
 import { UserRoles } from 'src/roles/models/user-roles.model';
+import { Subscription } from 'src/subscription/models/subscription.model';
+import { UserSubscription } from 'src/subscription/models/user-subscriptions.model';
 import { Token } from 'src/token/models/token.model';
 
 interface UserCreationsAttrs {
@@ -28,4 +32,13 @@ export class User extends Model<User, UserCreationsAttrs> {
 
     @HasOne(() => Token)
     refreshToken: Token;
+
+    @HasOne(() => Profile)
+    profile: Profile;
+
+    @BelongsToMany(() => Subscription, () => UserSubscription)
+    subscriptions: Subscription[];
+
+    @HasMany(() => Order)
+    orders: Order[];
 }

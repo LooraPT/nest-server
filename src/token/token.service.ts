@@ -17,7 +17,7 @@ export class TokenService {
         return token
     }
 
-    async saveToken(userId: number, refreshToken) {
+    async saveToken(userId: number, refreshToken: string) {
         const token = await this.tokenRepository.findOne({ where: { userId } })
         if (token) {
             token.refreshToken = refreshToken;
@@ -40,7 +40,7 @@ export class TokenService {
         return token;
     }
 
-    validateRefreshToken(refreshToken: string) {
+    validateRefreshToken(refreshToken: string): User {
         const userData = this.jwtService.verify(refreshToken)
         return userData;
     }

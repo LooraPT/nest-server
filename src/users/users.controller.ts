@@ -1,7 +1,6 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Controller, Get } from '@nestjs/common';
 import { Param } from '@nestjs/common/decorators';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { CreateUserDto } from './dto/user-create.dto';
 import { User } from './models/users.model';
 import { UsersService } from './users.service';
 
@@ -11,9 +10,10 @@ export class UsersController {
 
     constructor(private usersService: UsersService) { }
 
-
-    @Get('/:email')
-    getUserByEmail(@Param('email') email: string) {
-        return this.usersService.getUserByEmail(email)
+    @ApiOperation({ summary: 'get user and your subscriptions' })
+    @ApiResponse({ status: 200, type: User })
+    @Get('/:id')
+    getAllSubscriptionUser(@Param() id: number) {
+        return this.usersService.getSubscriptionsUser(id);
     }
 }

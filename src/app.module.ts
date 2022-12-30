@@ -9,6 +9,18 @@ import { UserRoles } from "./roles/models/user-roles.model";
 import { AuthModule } from './auth/auth.module';
 import { TokenModule } from './token/token.module';
 import { Token } from "./token/models/token.model";
+import { ProfileModule } from './profile/profile.module';
+import { Profile } from "./profile/models/profile.model";
+import { FilesModule } from './files/files.module';
+import { ServeStaticModule } from "@nestjs/serve-static";
+import { SubscriptionModule } from './subscription/subscription.module';
+import * as path from 'path';
+import { Subscription } from "./subscription/models/subscription.model";
+import { UserSubscription } from "./subscription/models/user-subscriptions.model";
+import { LevelModule } from './level/level.module';
+import { Level } from "./level/models/level.model";
+import { OrderModule } from './order/order.module';
+import { Order } from "./order/models/order.model";
 
 
 @Module({
@@ -25,13 +37,21 @@ import { Token } from "./token/models/token.model";
             username: process.env.POSTGRES_USER,
             password: process.env.POSTGRESS_PASSWORD,
             database: process.env.POSTGRES_DB,
-            models: [User, Role, UserRoles, Token],
+            models: [User, Role, UserRoles, Token, Profile, Subscription, UserSubscription, Level, Order],
             autoLoadModels: true
+        }),
+        ServeStaticModule.forRoot({
+            rootPath: path.join(__dirname, 'static'),
         }),
         UsersModule,
         RolesModule,
         AuthModule,
         TokenModule,
+        ProfileModule,
+        FilesModule,
+        SubscriptionModule,
+        LevelModule,
+        OrderModule,
     ],
 })
 export class AppModule { }

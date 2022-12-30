@@ -38,12 +38,12 @@ export class RolesService {
         return role;
     }
 
-    async addRole(dto: AddRoleDto): Promise<User> {
+    async addRole(dto: AddRoleDto): Promise<number> {
         const user = await this.usersRepository.findByPk(dto.userId)
         const role = await this.getRoleByValue(dto.value)
         if (user && role) {
-            await user.$add('role', role.id)
-            return user;
+            await user.$add('role', role.id);
+            return user.id;
         }
         throw new HttpException('role or user not found', HttpStatus.BAD_REQUEST)
     }
