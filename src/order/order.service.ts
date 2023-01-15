@@ -19,9 +19,9 @@ export class OrderService {
         if (!user || !subscription) {
             throw new HttpException('i can not found user or subscription', HttpStatus.INTERNAL_SERVER_ERROR)
         }
-        if (mbOrder) {
+        /*if (mbOrder) {
             throw new HttpException('You already have this subscription', HttpStatus.BAD_REQUEST)
-        }
+        }*/
         user.$add('subscription', dto.subscriptionId)
         const order = await this.orderRepository.create({ ...dto });
         return order;

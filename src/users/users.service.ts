@@ -26,11 +26,21 @@ export class UsersService {
         return findUser;
     }
 
-    async getSubscriptionsUser(id: number): Promise<User> {
+    async getSubscriptionsUser(id: number): Promise<Subscription[]> {
         const findUser = await this.usersRepository.findOne({ where: { id }, include: [{ model: Subscription, as: 'subscriptions' }] })
         if (findUser.subscriptions.length) {
-            return findUser;
+            return findUser.subscriptions;
         }
         return null
+    }
+
+    async removeSubscription(userId: number, subscriptionId: number): Promise<Subscription[]> {
+        const findUser = await this.usersRepository.findOne({ where: { id: userId }, include: [{ model: Subscription, as: 'subscriptions' }] })
+        for (let i = 0; i < findUser.subscriptions.length; i++) {
+            if (findUser.subscriptions[i].id == subscriptionId) {
+                await findUser.$remove('subscription', subscriptionId)
+            }
+        }
+        return findUser.subscriptions.filter(sub => sub.id !== subscriptionId)
     }
 }
