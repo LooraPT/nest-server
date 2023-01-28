@@ -43,10 +43,10 @@ export class ProfileService {
 
     async getProfileById(userId: number): Promise<Profile> {
         const profile = await this.profilesRepository.findOne({ where: { userId } });
-        if (profile) {
-            return profile;
+        if (!profile) {
+            const newTryCreateProfile = await this.createProfile(userId)
+            return newTryCreateProfile;
         }
-        throw new HttpException('I can not found your profile', HttpStatus.INTERNAL_SERVER_ERROR)
-
+        return profile;
     }
 }

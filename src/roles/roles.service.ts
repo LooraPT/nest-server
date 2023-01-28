@@ -32,6 +32,10 @@ export class RolesService {
 
     async getRoleByValue(value: string): Promise<Role> {
         const role = await this.rolesRepository.findOne({ where: { value } })
+        if (value === 'USER' && !role.value) {
+            const userRole = await this.rolesRepository.create({value: 'USER', description: 'just user'});
+            return userRole;
+        }
         if (!role) {
             throw new HttpException('role not found', HttpStatus.BAD_REQUEST)
         }
